@@ -1,6 +1,6 @@
 export interface UserInterface {
     id: string;
-    role: "super_admin" | "admin" | "accountant" | "investor" | "support";
+    role: "super_admin" | "admin" | "accountant" | "investor" | "support" | "";
     name: string;
     email: string;
     image?: string;

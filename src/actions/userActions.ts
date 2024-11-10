@@ -1,7 +1,7 @@
 "use server";
 
 import { connectMongoose } from "@/lib/db";
-import User from "@/models/user.model";
+import User, { UserDoc } from "@/models/user.model";
 import { UserInterface } from "@/types/types";
 import * as argon2 from "argon2";
 import { revalidatePath } from "next/cache";
@@ -9,17 +9,17 @@ import { revalidatePath } from "next/cache";
 export async function getUsers(): Promise<Array<Partial<UserInterface>>> {
     await connectMongoose();
     const rawUsers = await User.find();
-    const users = rawUsers.map((usr) => ({
-        id: usr.id as string,
-        role: usr.role,
-        name: usr.name,
-        email: usr.email,
+    const users = rawUsers.map((user: UserDoc) => ({
+        id: user.id as string,
+        role: user.role,
+        name: user.name,
+        email: user.email,
     }));
     return users;
 }
 
 export async function getUserByID(
-    id: string,
+    id: string
 ): Promise<Partial<UserInterface> | Error> {
     await connectMongoose();
     const user = await User.findById(id);
@@ -33,7 +33,8 @@ export async function getUserByID(
 }
 
 export async function createUser(
-  user: Partial<UserInterface>, path: string;
+    user: Partial<UserInterface>,
+    path: string
 ): Promise<null | Error> {
     await connectMongoose();
     if (!user.password || user.password == "")

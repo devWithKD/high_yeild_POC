@@ -7,6 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
+import { DialogTrigger } from "@/components/ui/dialog";
 import {
     Form,
     FormControl,
@@ -24,12 +25,20 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { UserInterface } from "@/types/types";
+import { createUser } from "@/actions/userActions";
 
 const formSchema = z.object({
     name: z.string().min(3, "Name must be at least 3 charachter long"),
     email: z.string().email(),
     password: z.string().min(8, "Password must be at least 8 charachters long"),
-    role: z.string(),
+    role: z.enum([
+        "super_admin",
+        "admin",
+        "accountant",
+        "investor",
+        "support",
+        "",
+    ]),
 });
 
 export function UserDialog({
@@ -44,15 +53,17 @@ export function UserDialog({
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            name: type === "add" ? "" : user.name,
-            email: type === "add" ? "" : user.email,
+            name: type === "add" ? "" : user?.name,
+            email: type === "add" ? "" : user?.email,
             password: "",
-            role: type === "add" ? "" : user.role,
+            role: type === "add" ? "" : user?.role,
         },
     });
 
-    function onSubmitAddUser(values: z.infer<typeof formSchema>) {
+    async function onSubmitAddUser(values: z.infer<typeof formSchema>) {
         try {
+            await createUser(values, "/admin/users");
+
             toast({
                 title: "You submitted the following values:",
                 description: (
@@ -154,14 +165,14 @@ export function UserDialog({
                                         </SelectTrigger>
                                     </FormControl>
                                     <SelectContent>
-                                        <SelectItem value="Admin">
+                                        <SelectItem value="admin">
                                             Admin
                                         </SelectItem>
-                                        <SelectItem value="Accountent">
+                                        <SelectItem value="accountant">
                                             Accountent
                                         </SelectItem>
-                                        <SelectItem value="Investors">
-                                            Investors
+                                        <SelectItem value="investor">
+                                            Investor
                                         </SelectItem>
                                     </SelectContent>
                                 </Select>
@@ -169,7 +180,9 @@ export function UserDialog({
                             </FormItem>
                         )}
                     />
-                    <Button type="submit">Add</Button>
+                    <DialogTrigger asChild>
+                        <Button type="submit">Add</Button>
+                    </DialogTrigger>
                 </form>
             </Form>
         </AppDialog>
