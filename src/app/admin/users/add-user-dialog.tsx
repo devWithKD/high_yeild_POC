@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { UserPlus } from "lucide-react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Button } from "@/components/ui/button";
-import { User } from "@/types/types";
+import { UserInterface } from "@/types/types";
 
 // interface FormData {
 //     username: string;
@@ -20,9 +20,9 @@ export function AddUserDialog() {
         register,
         handleSubmit,
         formState: { errors },
-    } = useForm<Partial<User>>();
+    } = useForm<Partial<UserInterface>>();
 
-    const onSubmitAddUser: SubmitHandler<Partial<User>> = (data) => {
+    const onSubmitAddUser: SubmitHandler<Partial<UserInterface>> = (data) => {
         console.log(data);
     };
 
