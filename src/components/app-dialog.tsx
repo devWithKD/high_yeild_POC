@@ -3,7 +3,6 @@ import {
     Dialog,
     DialogContent,
     DialogDescription,
-    // DialogFooter,
     DialogHeader,
     DialogTitle,
     DialogTrigger,
@@ -13,7 +12,6 @@ interface AppDialogProps {
     title: string;
     dialogDecription: string;
     Icon: React.ElementType;
-    // handleSubmitForm: () => Promise<void>;
     children: React.ReactNode;
 }
 
@@ -21,7 +19,6 @@ export function AppDialog({
     title,
     dialogDecription,
     Icon,
-    // handleSubmitForm,
     children,
 }: AppDialogProps) {
     return (
@@ -36,12 +33,7 @@ export function AppDialog({
                     <DialogTitle>{title}</DialogTitle>
                     <DialogDescription>{dialogDecription}</DialogDescription>
                 </DialogHeader>
-                {/* <form method="dialog" onSubmit={handleSubmitForm}> */}
                 {children}
-                {/* </form> */}
-                {/* <DialogFooter>
-                    <Button type="submit">{title}</Button>
-                </DialogFooter> */}
             </DialogContent>
         </Dialog>
     );

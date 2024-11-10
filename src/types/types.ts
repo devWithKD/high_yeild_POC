@@ -1,4 +1,4 @@
-export interface User {
+export interface UserInterface {
     role: "super_admin" | "admin" | "accountant" | "investor" | "support";
     name: string;
     email: string;

@@ -1,148 +1,177 @@
 "use client";
 
 import { AppDialog } from "@/components/app-dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { useToast } from "@/hooks/use-toast";
 import { UserPlus } from "lucide-react";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 import { Button } from "@/components/ui/button";
-import { User } from "@/types/types";
+import {
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from "@/components/ui/form";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
+import { UserInterface } from "@/types/types";
 
-// interface FormData {
-//     username: string;
-//     email: string;
-//     password: string;
-//     role: "admin" | "accountant" | "investor";
-// }
+const formSchema = z.object({
+    name: z.string().min(3, "Name must be at least 3 charachter long"),
+    email: z.string().email(),
+    password: z.string().min(8, "Password must be at least 8 charachters long"),
+    role: z.string(),
+});
 
-export function AddUserDialog() {
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-    } = useForm<Partial<User>>();
+export function UserDialog({
+    type,
+    user,
+}: {
+    type: "add" | "update";
+    user?: Partial<UserInterface>;
+}) {
+    const { toast } = useToast();
 
-    const onSubmitAddUser: SubmitHandler<Partial<User>> = (data) => {
-        console.log(data);
-    };
+    const form = useForm<z.infer<typeof formSchema>>({
+        resolver: zodResolver(formSchema),
+        defaultValues: {
+            name: type === "add" ? "" : user.name,
+            email: type === "add" ? "" : user.email,
+            password: "",
+            role: type === "add" ? "" : user.role,
+        },
+    });
+
+    function onSubmitAddUser(values: z.infer<typeof formSchema>) {
+        try {
+            toast({
+                title: "You submitted the following values:",
+                description: (
+                    <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+                        <code className="text-white">
+                            {JSON.stringify(values, null, 2)}
+                        </code>
+                    </pre>
+                ),
+            });
+            console.log(values);
+
+            // If submission is successful, reload the page
+            // window.location.reload();
+        } catch (error) {
+            console.error("Form submission error:", error);
+        }
+    }
 
     return (
         <AppDialog
             title="Add User"
             dialogDecription="Add user profile here. Click add when you're done."
             Icon={UserPlus}
-            // handleSubmitForm={handleSubmit(onSubmitAddUser)}
         >
-            <form action="post" onSubmit={handleSubmit(onSubmitAddUser)}>
-                <div className="grid gap-4 py-4">
-                    <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="name" className="text-right">
-                            Username
-                        </Label>
-                        <Input
-                            id="name"
-                            placeholder="name"
-                            className="col-span-3"
-                            type="text"
-                            {...register("name", {
-                                required: true,
-                                minLength: {
-                                    value: 6,
-                                    message: "Min-length should be 6.",
-                                },
-                                maxLength: {
-                                    value: 10,
-                                    message: "Max-length should be 10.",
-                                },
-                            })}
-                        />
-                        {errors.name && <span>{errors.name.message}</span>}
-                    </div>
-                    <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="email" className="text-right">
-                            Email
-                        </Label>
-                        <Input
-                            id="email"
-                            type="email"
-                            placeholder="example@email.com"
-                            className="col-span-3"
-                            {...register("email", {
-                                required: true,
-                                minLength: {
-                                    value: 6,
-                                    message: "Min-length should be 6.",
-                                },
-                                maxLength: {
-                                    value: 50,
-                                    message: "Max-length should be 50.",
-                                },
-                            })}
-                        />
-                        {errors.email && (
-                            <span className="w-[200px] text-sm text-red-600">
-                                {errors.email.message}
-                            </span>
+            <Form {...form}>
+                <form
+                    onSubmit={form.handleSubmit(onSubmitAddUser)}
+                    className="space-y-2"
+                >
+                    <FormField
+                        control={form.control}
+                        name="name"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Name</FormLabel>
+                                <FormControl>
+                                    <Input
+                                        type="text"
+                                        placeholder="Jone Dou"
+                                        {...field}
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
                         )}
-                    </div>
-                    <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="password" className="text-right">
-                            Password
-                        </Label>
-                        <Input
-                            id="password"
-                            type="password"
-                            placeholder="*****"
-                            className="col-span-3"
-                            {...register("password", {
-                                required: true,
-                                minLength: {
-                                    value: 6,
-                                    message: "Min-length should be 6.",
-                                },
-                                maxLength: {
-                                    value: 20,
-                                    message: "Max-length should be 20.",
-                                },
-                            })}
-                        />
-                        {errors.password && (
-                            <span>{errors.password.message}</span>
+                    />
+                    <FormField
+                        control={form.control}
+                        name="email"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Email</FormLabel>
+                                <FormControl>
+                                    <Input
+                                        type="email"
+                                        placeholder="example@email.com"
+                                        {...field}
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
                         )}
-                    </div>
-                    <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="role" className="text-right">
-                            Role
-                        </Label>
-                        <select
-                            {...register("role", {
-                                required: true,
-                            })}
-                        >
-                            <option value="admin">admin</option>
-                            <option value="accountant">accountant</option>
-                            <option value="investor">investor</option>
-                        </select>
-                        {/* <Select
-                            {...register("role", {
-                                required: true,
-                            })}
-                        >
-                            <SelectTrigger className="w-[278px]">
-                                <SelectValue placeholder="Role" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value="dark">admin</SelectItem>
-                                <SelectItem value="light">
-                                    accountant
-                                </SelectItem>
-                                <SelectItem value="system">investor</SelectItem>
-                            </SelectContent>
-                        </Select> */}
-                    </div>
-                </div>
-                <Button type="submit">add</Button>
-            </form>
+                    />
+                    <FormField
+                        control={form.control}
+                        name="password"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Password</FormLabel>
+                                <FormControl>
+                                    <Input
+                                        type="password"
+                                        placeholder={
+                                            type === "add"
+                                                ? "*****"
+                                                : "unchanged"
+                                        }
+                                        {...field}
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="role"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Role</FormLabel>
+                                <Select
+                                    onValueChange={field.onChange}
+                                    defaultValue={field.value}
+                                >
+                                    <FormControl>
+                                        <SelectTrigger>
+                                            <SelectValue placeholder="Select a Role" />
+                                        </SelectTrigger>
+                                    </FormControl>
+                                    <SelectContent>
+                                        <SelectItem value="Admin">
+                                            Admin
+                                        </SelectItem>
+                                        <SelectItem value="Accountent">
+                                            Accountent
+                                        </SelectItem>
+                                        <SelectItem value="Investors">
+                                            Investors
+                                        </SelectItem>
+                                    </SelectContent>
+                                </Select>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <Button type="submit">Add</Button>
+                </form>
+            </Form>
         </AppDialog>
     );
 }
