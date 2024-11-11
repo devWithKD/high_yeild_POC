@@ -2,36 +2,34 @@ import { Button } from "@/components/ui/button";
 import {
     Dialog,
     DialogContent,
-    DialogDescription,
     DialogHeader,
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog";
 
-interface AppDialogProps {
+export interface AppDialogProps {
     title: string;
-    dialogDecription: string;
-    Icon: React.ElementType;
+    Icon: React.ReactNode;
+    btnBgClassName: string;
     children: React.ReactNode;
 }
 
 export function AppDialog({
     title,
-    dialogDecription,
     Icon,
+    btnBgClassName,
     children,
 }: AppDialogProps) {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button variant="outline">
-                    <Icon />
+                <Button variant="default" className={btnBgClassName}>
+                    {Icon}
                 </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
                     <DialogTitle>{title}</DialogTitle>
-                    <DialogDescription>{dialogDecription}</DialogDescription>
                 </DialogHeader>
                 {children}
             </DialogContent>

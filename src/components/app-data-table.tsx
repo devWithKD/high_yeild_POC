@@ -72,7 +72,7 @@ export function AppDataTable<TData, TValue>({
     });
 
     return (
-        <div id="tempTable2" className="w-full">
+        <div className="w-full">
             <div className="flex items-center py-4">
                 <Input
                     placeholder="Filter emails..."
@@ -122,7 +122,9 @@ export function AppDataTable<TData, TValue>({
                             <TableRow key={headerGroup.id}>
                                 {headerGroup.headers.map((header) => {
                                     return (
-                                        <TableHead key={header.id}>
+                                        <TableHead
+                                            key={header.id}
+                                        >
                                             {header.isPlaceholder
                                                 ? null
                                                 : flexRender(

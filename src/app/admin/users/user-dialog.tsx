@@ -2,7 +2,6 @@
 
 import { AppDialog } from "@/components/app-dialog";
 import { useToast } from "@/hooks/use-toast";
-import { UserPlus } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -26,6 +25,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { UserInterface } from "@/types/types";
 import { createUser } from "@/actions/userActions";
+// import { UserDoc } from "@/models/user.model";
 
 const formSchema = z.object({
     name: z.string().min(3, "Name must be at least 3 charachter long"),
@@ -44,9 +44,17 @@ const formSchema = z.object({
 export function UserDialog({
     type,
     user,
+    title,
+    Icon,
+    btnBgClassName,
+    userId,
 }: {
     type: "add" | "update";
     user?: Partial<UserInterface>;
+    title: string;
+    Icon: React.ReactNode;
+    btnBgClassName: string;
+    userId?: string;
 }) {
     const { toast } = useToast();
 
@@ -75,23 +83,40 @@ export function UserDialog({
                 ),
             });
             console.log(values);
+        } catch (error) {
+            console.error("Form submission error:", error);
+        }
+    }
 
-            // If submission is successful, reload the page
-            // window.location.reload();
+    async function onSubmitUpdateUser(values: z.infer<typeof formSchema>) {
+        try {
+            console.log(userId);
+            // const user: UserInterface = await getUserByID(userId ? userId : "");
+            // console.log(user);
+
+            toast({
+                title: "You submitted the following values:",
+                description: (
+                    <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+                        <code className="text-white">
+                            {JSON.stringify(values, null, 2)}
+                        </code>
+                    </pre>
+                ),
+            });
+            console.log(values);
         } catch (error) {
             console.error("Form submission error:", error);
         }
     }
 
     return (
-        <AppDialog
-            title="Add User"
-            dialogDecription="Add user profile here. Click add when you're done."
-            Icon={UserPlus}
-        >
+        <AppDialog title={title} Icon={Icon} btnBgClassName={btnBgClassName}>
             <Form {...form}>
                 <form
-                    onSubmit={form.handleSubmit(onSubmitAddUser)}
+                    onSubmit={form.handleSubmit(
+                        type === "add" ? onSubmitAddUser : onSubmitUpdateUser
+                    )}
                     className="space-y-2"
                 >
                     <FormField
@@ -180,9 +205,13 @@ export function UserDialog({
                             </FormItem>
                         )}
                     />
-                    <DialogTrigger asChild>
-                        <Button type="submit">Add</Button>
-                    </DialogTrigger>
+                    <div className="flex justify-end w-full pt-4">
+                        <DialogTrigger className="just" asChild>
+                            <Button type="submit">
+                                {type.toLocaleUpperCase()}
+                            </Button>
+                        </DialogTrigger>
+                    </div>
                 </form>
             </Form>
         </AppDialog>
