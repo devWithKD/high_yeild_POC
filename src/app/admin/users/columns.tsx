@@ -70,12 +70,9 @@ export const columns: ColumnDef<Partial<UserInterface>>[] = [
     {
         id: "actions",
         enableHiding: false,
-        cell: () => {
-            return (
-                <ActionColumn
-                // userId={row.getValue("id")}
-                />
-            );
+        cell: ({ row }) => {
+            const item = row.original;
+            return <ActionColumn userId={item.id as string} />;
         },
     },
 ];

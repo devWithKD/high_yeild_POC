@@ -19,7 +19,7 @@ export async function getUsers(): Promise<Array<Partial<UserInterface>>> {
 }
 
 export async function getUserByID(
-    id: string
+    id: string,
 ): Promise<Partial<UserInterface> | Error> {
     await connectMongoose();
     const user = await User.findById(id);
@@ -34,7 +34,7 @@ export async function getUserByID(
 
 export async function createUser(
     user: Partial<UserInterface>,
-    path: string
+    path: string,
 ): Promise<null | Error> {
     await connectMongoose();
     if (!user.password || user.password == "")
@@ -48,6 +48,39 @@ export async function createUser(
         password: hash,
     });
     await newUser.save();
+    revalidatePath(path);
+    return null;
+}
+
+export async function updateUser(
+    user: Partial<UserInterface>,
+    path: string,
+): Promise<null | Error> {
+    await connectMongoose();
+    const existingUser = await User.findById(user.id);
+    if (!existingUser) throw new Error("User does not exists");
+    // eslint-disable-next-line
+    const { id, password, ...data } = user;
+    if (password == "" || !password) {
+        await existingUser.updateOne(data);
+        revalidatePath(path);
+        return null;
+    } else {
+        const hash = argon2.hash(password);
+        await existingUser.updateOne({ ...data, password: hash });
+        revalidatePath(path);
+        return null;
+    }
+}
+
+export async function deleteUser(
+    userID: string,
+    path: string,
+): Promise<null | Error> {
+    await connectMongoose();
+    const userToDelete = await User.findById(userID);
+    if (!userToDelete) throw new Error("User does not exists");
+    await userToDelete.deleteOne();
     revalidatePath(path);
     return null;
 }
