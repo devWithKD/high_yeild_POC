@@ -22,13 +22,13 @@ export interface UserInterface {
 //     current_value: number;
 // }
 
-// interface Unit {
-//     name: string;
-//     type: string;
-//     assetValue: number;
-//     investedValue: number;
-//     profitLoss: number;
-// }
+export interface UnitInterface {
+    name: string;
+    type: string;
+    assetValue: number;
+    investedValue: number;
+    profitLoss: number;
+}
 
 // interface Quereies {
 //     type: "booking" | "investment";

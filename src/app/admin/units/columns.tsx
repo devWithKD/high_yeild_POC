@@ -6,10 +6,10 @@ import { ArrowUpDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
-import { UserInterface } from "@/types/types";
+import { UnitInterface } from "@/types/types";
 import { ActionColumn } from "./action-column";
 
-export const columns: ColumnDef<Partial<UserInterface>>[] = [
+export const columns: ColumnDef<Partial<UnitInterface>>[] = [
     {
         id: "select",
         header: ({ table }) => (
@@ -35,21 +35,21 @@ export const columns: ColumnDef<Partial<UserInterface>>[] = [
         enableHiding: false,
     },
     {
-        accessorKey: "role",
-        header: "role",
+        accessorKey: "type",
+        header: "Type",
         cell: ({ row }) => {
-            return <Badge variant="outline">{row.getValue("role")}</Badge>;
+            return <Badge variant="outline">{row.getValue("type")}</Badge>;
         },
     },
     {
         accessorKey: "name",
-        header: "name",
+        header: "Name",
         cell: ({ row }) => (
             <div className="capitalize">{row.getValue("name")}</div>
         ),
     },
     {
-        accessorKey: "email",
+        accessorKey: "assetValue",
         header: ({ column }) => {
             return (
                 <Button
@@ -58,24 +58,40 @@ export const columns: ColumnDef<Partial<UserInterface>>[] = [
                         column.toggleSorting(column.getIsSorted() === "asc")
                     }
                 >
-                    Email
+                    Asset Value
                     <ArrowUpDown />
                 </Button>
             );
         },
         cell: ({ row }) => (
-            <div className="lowercase">{row.getValue("email")}</div>
+            <div className="lowercase">{row.getValue("assetValue")}</div>
+        ),
+    },
+    {
+        accessorKey: "investedValue",
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant="ghost"
+                    onClick={() =>
+                        column.toggleSorting(column.getIsSorted() === "asc")
+                    }
+                >
+                    Invested Value
+                    <ArrowUpDown />
+                </Button>
+            );
+        },
+        cell: ({ row }) => (
+            <div className="lowercase">{row.getValue("investedValue")}</div>
         ),
     },
     {
         id: "actions",
         enableHiding: false,
-        cell: () => {
-            return (
-                <ActionColumn
-                // userId={row.getValue("id")}
-                />
-            );
+        cell: ({ row }) => {
+            const item = row.original;
+            return <ActionColumn unitId={item.id as string} />;
         },
     },
 ];

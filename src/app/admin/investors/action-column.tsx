@@ -3,7 +3,9 @@ import { Trash2 } from "lucide-react";
 import { Pencil } from "lucide-react";
 import { UserDialog } from "@/app/admin/users/user-dialog";
 
-export function ActionColumn({ userId }: { userId: string }) {
+export function ActionColumn(
+    // { userId }: { userId: string }
+) {
     return (
         <div className="space-x-2">
             <UserDialog
@@ -11,7 +13,7 @@ export function ActionColumn({ userId }: { userId: string }) {
                 title="Update User"
                 Icon={<Pencil />}
                 btnBgClassName="bg-blue-500"
-                unitId={userId}
+                // userId={userId}
             />
             <Button type="submit" className="bg-red-500">
                 <Trash2 />

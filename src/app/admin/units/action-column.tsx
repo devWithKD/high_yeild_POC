@@ -1,17 +1,17 @@
 import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
 import { Pencil } from "lucide-react";
-import { UserDialog } from "@/app/admin/users/user-dialog";
+import { UnitDialog } from "./unit-dialog";
 
-export function ActionColumn({ userId }: { userId: string }) {
+export function ActionColumn({ unitId }: { unitId: string }) {
     return (
         <div className="space-x-2">
-            <UserDialog
+            <UnitDialog
                 type="update"
-                title="Update User"
+                title="Update Unit"
                 Icon={<Pencil />}
                 btnBgClassName="bg-blue-500"
-                unitId={userId}
+                unitId={unitId}
             />
             <Button type="submit" className="bg-red-500">
                 <Trash2 />

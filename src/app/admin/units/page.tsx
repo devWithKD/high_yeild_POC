@@ -1,39 +1,33 @@
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { columns } from "./columns";
+import { AppDataTable } from "../../../components/app-data-table";
+import { UnitDialog } from "./unit-dialog";
+// import { getUsers } from "@/actions/userActions";
+import { HousePlus } from "lucide-react";
 
-import Link from "next/link";
+async function GetUnits() {
+    return [
+        {
+            id: "1",
+            type: "Bungalow",
+            name: "Ghar",
+            assetValue: 7500000,
+            investedValue: 5000000,
+        },
+    ];
+}
 
-export default function Home() {
-  return (
-    <>
-      <Table>
-        <TableCaption>A list of your recent invoices.</TableCaption>
-        <TableHeader>
-          <TableRow>
-            <TableHead className="w-[100px]">Invoice</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead>Method</TableHead>
-            <TableHead className="text-right">Amount</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          <TableRow>
-            <TableCell className="font-medium">INV001</TableCell>
-            <TableCell>Paid</TableCell>
-            <TableCell>Credit Card</TableCell>
-            <TableCell className="text-right">$250.00</TableCell>
-          </TableRow>
-        </TableBody>
-      </Table>
+export default async function Home() {
+    const data = await GetUnits();
 
-      <Link href="/login/su">LoginPG</Link>
-    </>
-  );
+    return (
+        <div id="temp1" className="container mx-auto py-10">
+            <UnitDialog
+                type="add"
+                title="Add Unit"
+                Icon={<HousePlus />}
+                btnBgClassName="bg-green-400"
+            />
+            <AppDataTable columns={columns} data={data} />
+        </div>
+    );
 }
