@@ -25,6 +25,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { UserInterface } from "@/types/types";
 import { createUser } from "@/actions/userActions";
+import { usePathname } from "next/navigation";
 // import { UserDoc } from "@/models/user.model";
 
 const formSchema = z.object({
@@ -47,7 +48,7 @@ export function UserDialog({
     title,
     Icon,
     btnBgClassName,
-    userId,
+    // userId,
 }: {
     type: "add" | "update";
     user?: Partial<UserInterface>;
@@ -57,7 +58,7 @@ export function UserDialog({
     userId?: string;
 }) {
     const { toast } = useToast();
-
+    const path = usePathname();
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -70,7 +71,7 @@ export function UserDialog({
 
     async function onSubmitAddUser(values: z.infer<typeof formSchema>) {
         try {
-            await createUser(values, "/admin/users");
+            await createUser(values, path);
 
             toast({
                 title: "You submitted the following values:",
@@ -82,7 +83,7 @@ export function UserDialog({
                     </pre>
                 ),
             });
-            console.log(values);
+            // console.log(values);
         } catch (error) {
             console.error("Form submission error:", error);
         }
@@ -90,7 +91,7 @@ export function UserDialog({
 
     async function onSubmitUpdateUser(values: z.infer<typeof formSchema>) {
         try {
-            console.log(userId);
+            // console.log(userId);
             // const user: UserInterface = await getUserByID(userId ? userId : "");
             // console.log(user);
 
@@ -115,7 +116,7 @@ export function UserDialog({
             <Form {...form}>
                 <form
                     onSubmit={form.handleSubmit(
-                        type === "add" ? onSubmitAddUser : onSubmitUpdateUser
+                        type === "add" ? onSubmitAddUser : onSubmitUpdateUser,
                     )}
                     className="space-y-2"
                 >
@@ -206,7 +207,10 @@ export function UserDialog({
                         )}
                     />
                     <div className="flex justify-end w-full pt-4">
-                        <DialogTrigger className="just" asChild>
+                        <DialogTrigger
+                            asChild
+                            disabled={!form.formState.isValid}
+                        >
                             <Button type="submit">
                                 {type.toLocaleUpperCase()}
                             </Button>

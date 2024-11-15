@@ -1,12 +1,29 @@
+export const internalRoles = [
+    "super_admin",
+    "admin",
+    "accountant",
+    "support",
+] as const;
+
+export type InternalRole = (typeof internalRoles)[number];
+
+export function isInternalRole(value: string): value is InternalRole {
+    return (internalRoles as readonly string[]).includes(value);
+}
+
+export const roles = [...internalRoles, "investor", ""] as const;
+
+export type Role = (typeof roles)[number];
+
 export interface UserInterface {
     id: string;
-    role: "super_admin" | "admin" | "accountant" | "investor" | "support" | "";
+    role: Role;
     name: string;
     email: string;
     image?: string;
     emailVerified?: unknown;
     password?: string;
-    provider: string;
+    provider: [string];
 }
 
 // interface Investor extends User {
@@ -23,6 +40,7 @@ export interface UserInterface {
 // }
 
 export interface UnitInterface {
+    id: string;
     name: string;
     type: string;
     assetValue: number;

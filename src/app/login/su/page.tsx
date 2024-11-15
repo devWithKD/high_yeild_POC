@@ -1,18 +1,15 @@
 import { FaGithub } from "react-icons/fa";
 // import { auth, signIn } from "@/auth";
 import { redirect } from "next/navigation";
+import { auth, signIn } from "@/auth";
 // import { kaushanScript } from "@/lib/fonts";
-
-async function auth() {
-    return {};
-}
 
 export default async function Page() {
     const session = await auth();
-    console.log(session?.user?.id);
+    // console.log(session?.user?.id);
     if (!session?.user)
         return (
-            <div className="h-[90vh] flex flex-col justify-center items-center bg-zinc-200 rounded-[16px]">
+            <div className="w-screen h-screen flex flex-col justify-center items-center">
                 <div className={`text-center text-primaryBG mb-8`}>
                     <h2 className="text-4xl">Welcome to</h2>
                     <h2 className="text-6xl font-semibold">High Yeild</h2>
@@ -21,7 +18,7 @@ export default async function Page() {
                     className="flex flex-col gap-2"
                     action={async () => {
                         "use server";
-                        // await signIn("github");
+                        await signIn("github");
                     }}
                 >
                     <label className="font-bold text-lg text-center">
@@ -37,5 +34,5 @@ export default async function Page() {
                 </form>
             </div>
         );
-    else redirect("/");
+    else redirect("/application");
 }

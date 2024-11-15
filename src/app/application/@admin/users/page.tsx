@@ -1,11 +1,12 @@
 import { columns } from "./columns";
-import { AppDataTable } from "../../../components/app-data-table";
+import { AppDataTable } from "@/components/app-data-table";
 import { UserDialog } from "./user-dialog";
 import { getUsers } from "@/actions/userActions";
 import { UserPlus } from "lucide-react";
 
 export default async function Home() {
-    const data = await getUsers();
+    let data = await getUsers();
+    data = data.filter((user) => user.role != "super_admin");
 
     return (
         <div id="temp1" className="container mx-auto py-10">

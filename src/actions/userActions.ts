@@ -1,5 +1,6 @@
 "use server";
 
+import { signIn } from "@/auth";
 import { connectMongoose } from "@/lib/db";
 import User, { UserDoc } from "@/models/user.model";
 import { UserInterface } from "@/types/types";
@@ -32,11 +33,22 @@ export async function getUserByID(
     };
 }
 
+export async function getUserRole(
+    id: string | undefined,
+): Promise<string | Error> {
+    await connectMongoose();
+    if (!id) throw new Error("User does not exists");
+    const user = await User.findById(id);
+    if (!user) throw new Error("User does not exists");
+    return user.role;
+}
+
 export async function createUser(
     user: Partial<UserInterface>,
     path: string,
 ): Promise<null | Error> {
     await connectMongoose();
+    console.log(user);
     if (!user.password || user.password == "")
         throw new Error("Password cannot be empty");
     const userExist = await User.findOne({ email: user.email });
@@ -83,4 +95,11 @@ export async function deleteUser(
     await userToDelete.deleteOne();
     revalidatePath(path);
     return null;
+}
+
+export async function signInWithCreds(values: {
+    email: string;
+    password: string;
+}) {
+    await signIn("credentials", values);
 }

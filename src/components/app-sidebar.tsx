@@ -11,7 +11,7 @@ import {
     SidebarMenuItem,
 } from "@/components/ui/sidebar";
 
-const path_admin = "/admin";
+const path_admin = "/application";
 // const path_User = "/User";
 
 // Menu items.

@@ -1,5 +1,5 @@
 import { columns } from "./columns";
-import { AppDataTable } from "../../../components/app-data-table";
+import { AppDataTable } from "@/components/app-data-table";
 import { UnitDialog } from "./unit-dialog";
 // import { getUsers } from "@/actions/userActions";
 import { HousePlus } from "lucide-react";

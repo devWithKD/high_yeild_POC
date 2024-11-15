@@ -14,7 +14,7 @@ import {
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { useToast } from "@/hooks/use-toast";
-// import { signInWithCreds } from "@/actions/user/userActions";
+import { signInWithCreds } from "@/actions/userActions";
 // import { AuthError } from "next-auth";
 
 const formSchema = z.object({
@@ -35,8 +35,8 @@ export function AppLoginForm() {
 
     const onSubmitHandler = async (values: z.infer<typeof formSchema>) => {
         try {
-            console.log(values);
-            // await signInWithCreds(values);
+            // console.log(values);
+            await signInWithCreds(values);
             toast({ title: "Signed In Successfully!" });
         } catch (e) {
             const err = e as Error;

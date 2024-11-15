@@ -33,7 +33,7 @@ export function UnitDialog({
     title,
     Icon,
     btnBgClassName,
-    unitId,
+    // unitId,
 }: {
     type: "add" | "update";
     user?: Partial<UnitInterface>;
@@ -68,7 +68,7 @@ export function UnitDialog({
                     </pre>
                 ),
             });
-            console.log(values);
+            // console.log(values);
         } catch (error) {
             console.error("Form submission error:", error);
         }
@@ -76,7 +76,7 @@ export function UnitDialog({
 
     async function onSubmitUpdateUser(values: z.infer<typeof formSchema>) {
         try {
-            console.log(unitId);
+            // console.log(unitId);
             // const user: UserInterface = await getUserByID(userId ? userId : "");
             // console.log(user);
 
@@ -90,7 +90,7 @@ export function UnitDialog({
                     </pre>
                 ),
             });
-            console.log(values);
+            // console.log(values);
         } catch (error) {
             console.error("Form submission error:", error);
         }
@@ -101,7 +101,7 @@ export function UnitDialog({
             <Form {...form}>
                 <form
                     onSubmit={form.handleSubmit(
-                        type === "add" ? onSubmitAddUser : onSubmitUpdateUser
+                        type === "add" ? onSubmitAddUser : onSubmitUpdateUser,
                     )}
                     className="space-y-2"
                 >

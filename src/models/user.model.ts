@@ -7,7 +7,7 @@ export interface UserDoc extends Document {
     image?: string;
     emailVerified?: unknown;
     password?: string;
-    provider: string;
+    provider: [string];
 }
 
 const UserSchema: Schema<UserDoc> = new Schema({
@@ -17,7 +17,7 @@ const UserSchema: Schema<UserDoc> = new Schema({
     image: String,
     emailVerified: String,
     password: String,
-    provider: String,
+    provider: { type: [String] },
 });
 
 const User =
