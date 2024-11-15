@@ -70,7 +70,7 @@ export async function updateUser(
 ): Promise<null | Error> {
     await connectMongoose();
     const existingUser = await User.findById(user.id);
-    if (!existingUser) throw new Error("User does not exists");
+    if (!existingUser) throw new Error("User does not exist");
     // eslint-disable-next-line
     const { id, password, ...data } = user;
     if (password == "" || !password) {
