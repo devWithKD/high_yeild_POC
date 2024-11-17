@@ -33,8 +33,8 @@ export function UnitDialog({
     title,
     Icon,
     btnBgClassName,
-    // unitId,
-}: {
+}: // unitId,
+{
     type: "add" | "update";
     user?: Partial<UnitInterface>;
     title: string;
@@ -52,10 +52,12 @@ export function UnitDialog({
             assetValue: type === "add" ? undefined : user?.assetValue,
             investedValue: type === "add" ? undefined : user?.investedValue,
         },
+        mode: "onChange",
     });
 
     async function onSubmitAddUser(values: z.infer<typeof formSchema>) {
         try {
+            console.log(values);
             await createUser(values, "/admin/users");
 
             toast({
@@ -101,7 +103,7 @@ export function UnitDialog({
             <Form {...form}>
                 <form
                     onSubmit={form.handleSubmit(
-                        type === "add" ? onSubmitAddUser : onSubmitUpdateUser,
+                        type === "add" ? onSubmitAddUser : onSubmitUpdateUser
                     )}
                     className="space-y-2"
                 >
@@ -142,19 +144,22 @@ export function UnitDialog({
                     <FormField
                         control={form.control}
                         name="assetValue"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Asset Value</FormLabel>
-                                <FormControl>
-                                    <Input
-                                        type="number"
-                                        placeholder="₹0000"
-                                        {...field}
-                                    />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
+                        render={({ field }) => {
+                            console.log(field);
+                            return (
+                                <FormItem>
+                                    <FormLabel>Asset Value</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            type="number"
+                                            placeholder="₹0000"
+                                            {...field}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            );
+                        }}
                     />
                     <FormField
                         control={form.control}
@@ -174,7 +179,10 @@ export function UnitDialog({
                         )}
                     />
                     <div className="flex justify-end w-full pt-4">
-                        <DialogTrigger className="just" asChild>
+                        <DialogTrigger
+                            disabled={!form.formState.isValid}
+                            asChild
+                        >
                             <Button type="submit">
                                 {type.toLocaleUpperCase()}
                             </Button>

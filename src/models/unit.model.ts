@@ -18,6 +18,6 @@ const UnitSchema: Schema<UnitDoc> = new Schema({
 
 const Unit =
     (mongoose.models.units as mongoose.Model<UnitDoc>) ||
-    mongoose.model("unit", UnitSchema);
+    mongoose.model("units", UnitSchema);
 
 export default Unit;
