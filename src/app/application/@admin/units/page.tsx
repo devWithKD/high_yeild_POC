@@ -5,18 +5,6 @@ import { UnitDialog } from "./unit-dialog";
 import { HousePlus } from "lucide-react";
 import { getUnits } from "@/actions/unitActions";
 
-// async function GetUnits() {
-//     return [
-//         {
-//             id: "1",
-//             type: "Bungalow",
-//             name: "Ghar",
-//             assetValue: 7500000,
-//             investedValue: 5000000,
-//         },
-//     ];
-// }
-
 export default async function Home() {
     const data = await getUnits();
 

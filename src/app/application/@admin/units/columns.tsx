@@ -91,7 +91,7 @@ export const columns: ColumnDef<Partial<UnitInterface>>[] = [
         enableHiding: false,
         cell: ({ row }) => {
             const item = row.original;
-            return <ActionColumn unitId={item.id as string} />;
+            return <ActionColumn unit={item} />;
         },
     },
 ];

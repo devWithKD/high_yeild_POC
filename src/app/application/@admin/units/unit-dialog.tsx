@@ -18,48 +18,45 @@ import {
 import { Input } from "@/components/ui/input";
 import { UnitInterface } from "@/types/types";
 import { createUser } from "@/actions/userActions";
+import { createUnit } from "@/actions/unitActions";
 // import { UserDoc } from "@/models/user.model";
 
 const formSchema = z.object({
     name: z.string().min(3, "Name must be at least 3 charachter long"),
     type: z.string(),
-    assetValue: z.number(),
-    investedValue: z.number(),
+    assetValue: z.coerce.number(),
+    investedValue: z.coerce.number(),
 });
 
 export function UnitDialog({
     type,
-    user,
     title,
     Icon,
     btnBgClassName,
-}: // unitId,
-{
+    unit,
+}: {
     type: "add" | "update";
-    user?: Partial<UnitInterface>;
     title: string;
     Icon: React.ReactNode;
     btnBgClassName: string;
-    unitId?: string;
+    unit?: Partial<UnitInterface>;
 }) {
     const { toast } = useToast();
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            name: type === "add" ? "" : user?.name,
-            type: type === "add" ? "" : user?.type,
-            assetValue: type === "add" ? undefined : user?.assetValue,
-            investedValue: type === "add" ? undefined : user?.investedValue,
+            name: type === "add" ? "" : unit?.name,
+            type: type === "add" ? "" : unit?.type,
+            assetValue: type === "add" ? undefined : unit?.assetValue,
+            investedValue: type === "add" ? undefined : unit?.investedValue,
         },
         mode: "onChange",
     });
 
     async function onSubmitAddUser(values: z.infer<typeof formSchema>) {
         try {
-            console.log(values);
-            await createUser(values, "/admin/users");
-
+            await createUnit(values, "/application/units");
             toast({
                 title: "You submitted the following values:",
                 description: (
@@ -81,6 +78,7 @@ export function UnitDialog({
             // console.log(unitId);
             // const user: UserInterface = await getUserByID(userId ? userId : "");
             // console.log(user);
+            await createUser(values, "/application/units");
 
             toast({
                 title: "You submitted the following values:",
@@ -103,7 +101,7 @@ export function UnitDialog({
             <Form {...form}>
                 <form
                     onSubmit={form.handleSubmit(
-                        type === "add" ? onSubmitAddUser : onSubmitUpdateUser
+                        type === "add" ? onSubmitAddUser : onSubmitUpdateUser,
                     )}
                     className="space-y-2"
                 >
