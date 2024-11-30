@@ -101,7 +101,7 @@ export function UnitDialog({
             <Form {...form}>
                 <form
                     onSubmit={form.handleSubmit(
-                        type === "add" ? onSubmitAddUser : onSubmitUpdateUser,
+                        type === "add" ? onSubmitAddUser : onSubmitUpdateUser
                     )}
                     className="space-y-2"
                 >

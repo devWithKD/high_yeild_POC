@@ -7,8 +7,8 @@ import { revalidatePath } from "next/cache";
 
 export async function getUnits(): Promise<Array<Partial<UnitInterface>>> {
     await connectMongoose();
-    const units = await Unit.find();
-    return units.map((unit) => ({ ...unit.toObject() }));
+    const units = await Unit.find().lean();
+    return units;
 }
 
 export async function createUnit(

@@ -6,7 +6,6 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
 import {
-    ColumnFiltersState,
     SortingState,
     VisibilityState,
     getFilteredRowModel,
@@ -46,8 +45,7 @@ export function AppDataTable<TData, TValue>({
     data,
 }: DataTableProps<TData, TValue>) {
     const [sorting, setSorting] = React.useState<SortingState>([]);
-    const [columnFilters, setColumnFilters] =
-        React.useState<ColumnFiltersState>([]);
+    const [globalFilter, setGlobalFilter] = React.useState<string[]>([]);
     const [columnVisibility, setColumnVisibility] =
         React.useState<VisibilityState>({});
     const [rowSelection, setRowSelection] = React.useState({});
@@ -56,7 +54,7 @@ export function AppDataTable<TData, TValue>({
         data,
         columns,
         onSortingChange: setSorting,
-        onColumnFiltersChange: setColumnFilters,
+        onGlobalFilterChange: setGlobalFilter,
         getCoreRowModel: getCoreRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
         getSortedRowModel: getSortedRowModel(),
@@ -65,7 +63,7 @@ export function AppDataTable<TData, TValue>({
         onRowSelectionChange: setRowSelection,
         state: {
             sorting,
-            columnFilters,
+            globalFilter,
             columnVisibility,
             rowSelection,
         },
@@ -74,7 +72,7 @@ export function AppDataTable<TData, TValue>({
     return (
         <div className="w-full">
             <div className="flex items-center py-4">
-                <Input
+                {/* <Input
                     placeholder="Filter emails..."
                     value={
                         (table
@@ -87,6 +85,13 @@ export function AppDataTable<TData, TValue>({
                             ?.setFilterValue(event.target.value)
                     }
                     className="max-w-sm"
+                /> */}
+                <Input
+                    placeholder="Search..."
+                    onChange={(event) =>
+                        table.setGlobalFilter(String(event.target.value))
+                    }
+                    className="max-w-sm bg-zinc-50"
                 />
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -122,9 +127,7 @@ export function AppDataTable<TData, TValue>({
                             <TableRow key={headerGroup.id}>
                                 {headerGroup.headers.map((header) => {
                                     return (
-                                        <TableHead
-                                            key={header.id}
-                                        >
+                                        <TableHead key={header.id}>
                                             {header.isPlaceholder
                                                 ? null
                                                 : flexRender(

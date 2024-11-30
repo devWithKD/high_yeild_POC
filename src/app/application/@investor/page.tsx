@@ -1,3 +1,5 @@
-export default async function Page() {
-    return <div>Investor</div>;
+import { redirect } from "next/navigation";
+
+export default function Home() {
+    return redirect("/application/overview");
 }

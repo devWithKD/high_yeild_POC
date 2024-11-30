@@ -15,7 +15,7 @@ export function ActionColumn({ unit }: { unit: Partial<UnitInterface> }) {
     };
 
     return (
-        <div className="space-x-2">
+        <div className="space-x-2 flex">
             <UnitDialog
                 type="update"
                 title="Update Unit"

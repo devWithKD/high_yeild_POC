@@ -26,18 +26,25 @@ export interface UserInterface {
     provider: [string];
 }
 
+export interface TransactionInterface {
+    user: Partial<UserInterface>;
+    type: "credit" | "debit" | "investment";
+    transaction_date: Date;
+    transaction_amount: number;
+}
+
 // interface Investor extends User {
 //     investments: string[]; // investement IDs
 // }
 
-// interface Investement {
-//     unit: string; // Unit ID
-//     invested_amt: number; //const
-//     investment_date: Date;
-//     maturity: Date;
-//     percent_investment: number;
-//     current_value: number;
-// }
+export interface InvestementInterface {
+    unit: string; // Unit ID
+    invested_amt: number; //const
+    investment_date: Date;
+    maturity: Date;
+    percent_investment: number;
+    current_value: number;
+}
 
 export interface UnitInterface {
     id: string;
@@ -48,9 +55,17 @@ export interface UnitInterface {
     profitLoss: number;
 }
 
-// interface Quereies {
-//     type: "booking" | "investment";
-//     description: string;
-//     bookingFrom?: Date;
-//     bookingTo?: Date;
+export interface QuereiesInterface {
+    user: Partial<UserInterface>;
+    type: "booking" | "investment";
+    state: "raised" | "inprocess" | "resolved";
+    description: string;
+    answer: string;
+    bookingFrom?: Date;
+    bookingTo?: Date;
+}
+
+// export interface QuereiesCard extends QuereiesInterface {
+//     name: string;
+//     email: string;
 // }

@@ -1,39 +1,68 @@
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { AppQueryCard } from "@/components/app-query-card";
+import { QuereiesInterface } from "@/types/types";
 
-import Link from "next/link";
+function getQueries(): QuereiesInterface[] {
+    return [
+        {
+            type: "investment",
+            state: "raised",
+            user: {
+                name: "Jone Dou",
+                email: "jonedou@gmail.com",
+            },
+            description: "What is the value of xyz prop willing to negotiate?",
+            answer: "",
+        },
+        {
+            type: "investment",
+            state: "raised",
+            user: {
+                name: "Jone Dou",
+                email: "jonedou@gmail.com",
+            },
+            description: "What is the value of xyz prop willing to negotiate?",
+            answer: "",
+        },
+        {
+            type: "investment",
+            state: "raised",
+            user: {
+                name: "Jone Dou",
+                email: "jonedou@gmail.com",
+            },
+            description: "What is the value of xyz prop willing to negotiate?",
+            answer: "",
+        },
+        {
+            type: "investment",
+            state: "raised",
+            user: {
+                name: "Jone Dou",
+                email: "jonedou@gmail.com",
+            },
+            description: "What is the value of xyz prop willing to negotiate?",
+            answer: "",
+        },
+    ];
+}
 
-export default function Home() {
-  return (
-    <>
-      <Table>
-        <TableCaption>A list of your recent invoices.</TableCaption>
-        <TableHeader>
-          <TableRow>
-            <TableHead className="w-[100px]">Invoice</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead>Method</TableHead>
-            <TableHead className="text-right">Amount</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          <TableRow>
-            <TableCell className="font-medium">INV001</TableCell>
-            <TableCell>Paid</TableCell>
-            <TableCell>Credit Card</TableCell>
-            <TableCell className="text-right">$250.00</TableCell>
-          </TableRow>
-        </TableBody>
-      </Table>
+export default async function Home() {
+    const data = await getQueries();
 
-      <Link href="/login/su">LoginPG</Link>
-    </>
-  );
+    return (
+        <>
+            <div
+                id="temp1"
+                className="container py-10 mt-[-25px] flex flex-wrap"
+            >
+                {data.map((e, i) => (
+                    <AppQueryCard
+                        key={i}
+                        quereiesInterface={e}
+                        isAdmin={true}
+                    />
+                ))}
+            </div>
+        </>
+    );
 }

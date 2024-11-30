@@ -48,8 +48,8 @@ export function UserDialog({
     title,
     Icon,
     btnBgClassName,
-    // userId,
-}: {
+}: // userId,
+{
     type: "add" | "update";
     user?: Partial<UserInterface>;
     title: string;
@@ -116,7 +116,7 @@ export function UserDialog({
             <Form {...form}>
                 <form
                     onSubmit={form.handleSubmit(
-                        type === "add" ? onSubmitAddUser : onSubmitUpdateUser,
+                        type === "add" ? onSubmitAddUser : onSubmitUpdateUser
                     )}
                     className="space-y-2"
                 >
